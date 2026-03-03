@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Андрей</title>
+    <!-- Google Fonts Inter и Source Sans Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-color: #000000;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --card-bg: rgba(30, 30, 32, 0.4);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.6);
+            --accent: #66BB6A;
+            --accent-hover: #4CAF50;
+            --logo-color: #f5f5f7;
+            --nav-link: #a1a1a6;
+            --nav-link-hover: #66BB6A;
+            --footer-bg: rgba(20, 20, 22, 0.4);
+            --footer-text: #6e6e73;
+            --shine-color: rgba(255, 255, 255, 0.2);
+            --constellation-color-close: rgba(200, 200, 220, 0.7);
+            --constellation-color-medium: rgba(200, 200, 220, 0.5);
+            --constellation-color-far: rgba(200, 200, 220, 0.3);
+            --skill-shine: rgba(102, 187, 106, 0.3);
+            --inner-glow: rgba(102, 187, 106, 0.2);
+            --nebula-color: rgba(150, 100, 255, 0.2);
+        }
+
+        body.light-theme {
+            --bg-color: #e8e8ed;
+            --text-primary: #1d1d1f;
+            --text-secondary: #424245;
+            --card-bg: rgba(255, 255, 255, 0.3);
+            --card-border: rgba(255, 255, 255, 0.8);
+            --card-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.2);
+            --accent: #2E7D32;
+            --accent-hover: #1B5E20;
+            --logo-color: #1d1d1f;
+            --nav-link: #424245;
+            --nav-link-hover: #2E7D32;
+            --footer-bg: rgba(255, 255, 255, 0.4);
+            --footer-text: #86868b;
+            --shine-color: rgba(0, 0, 0, 0.15);
+            --constellation-color-close: rgba(80, 80, 90, 0.8);
+            --constellation-color-medium: rgba(80, 80, 90, 0.6);
+            --constellation-color-far: rgba(80, 80, 90, 0.4);
+            --skill-shine: rgba(46, 125, 50, 0.3);
+            --inner-glow: rgba(46, 125, 50, 0.2);
+            --nebula-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .section-title, .btn, .skill-tag, .contact-item, .nav-mini-card {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nebula {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vmax;
+            height: 100vmax;
+            background: radial-gradient(circle at center, var(--nebula-color) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: screen;
+            animation: nebulaFloat 20s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        @keyframes nebulaFloat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) scale(1.05) rotate(5deg); }
+            75% { transform: translate(-50%, -50%) scale(0.95) rotate(-5deg); }
+        }
+
+        #constellationCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+
+        #skills, #portfolio, #contacts, #why-me, #steps {
+            scroll-margin-top: 90px;
+        }
+
+        /* ===== КНОПКА СМЕНЫ ТЕМЫ ===== */
+        .theme-toggle-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 10px;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .theme-toggle-fixed:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ===== НАВИГАЦИОННЫЕ МИНИ-КАРТОЧКИ ===== */
+        .nav-mini-container {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .nav-mini-card {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 40px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.3s ease, background 0.2s;
+            cursor: pointer;
+            box-shadow: inset 0 0 15px var(--inner-glow), var(--card-shadow);
+        }
+        .nav-mini-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(102, 187, 106, 0.4),
+                        0 0 40px rgba(66, 133, 244, 0.3),
+                        0 0 60px rgba(156, 39, 176, 0.2),
+                        inset 0 0 20px var(--inner-glow);
+            color: var(--accent);
+        }
+
+        /* Анимация появления */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+        .delay-6 { transition-delay: 0.6s; }
+
+        /* Герой */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+            padding: 3rem 0;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .hero-text .highlight {
+            color: var(--accent);
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin: 1.5rem 0 2rem;
+            max-width: 500px;
+        }
+
+        .hero-image {
+            width: 320px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .clapperboard-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 0.1s ease-out;
+        }
+
+        .clapperboard {
+            font-size: 8rem;
+            color: var(--accent);
+            filter: drop-shadow(0 0 15px var(--accent));
+            animation: appear 1.5s ease-out forwards;
+            position: relative;
+            z-index: 5;
+            transform: translateZ(0);
+        }
+
+        @keyframes appear {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            60% {
+                opacity: 0.8;
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .air-flow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed var(--accent);
+            opacity: 0.4;
+            animation: rotateAir 4s linear infinite;
+            pointer-events: none;
+        }
+
+        .air-flow-1 {
+            width: 220px;
+            height: 220px;
+            animation-duration: 6s;
+            opacity: 0.3;
+        }
+
+        .air-flow-2 {
+            width: 260px;
+            height: 260px;
+            animation-duration: 8s;
+            animation-direction: reverse;
+            opacity: 0.2;
+        }
+
+        .air-flow-3 {
+            width: 180px;
+            height: 180px;
+            animation-duration: 5s;
+            opacity: 0.25;
+        }
+
+        @keyframes rotateAir {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Карточки навыков */
+        .skills-section {
+            margin: 2rem 0 5rem 0;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            box-shadow: inset 0 0 30px var(--inner-glow),
+                        var(--card-shadow);
+            transition: transform 0.8s ease-out,
+                        box-shadow 2.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        background 0.3s ease;
+            cursor: default;
+            padding: 1.8rem 1.2rem;
+            text-align: center;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 20px rgba(102, 187, 106, 0.4),
+                        0 0 40px rgba(66, 133, 244, 0.3),
+                        0 0 60px rgba(156, 39, 176, 0.2),
+                        inset 0 0 50px var(--inner-glow);
+        }
+
+        .skill-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 5px var(--accent));
+            transition: filter 0.8s ease-out;
+        }
+
+        .skill-card:hover i {
+            filter: drop-shadow(0 0 15px var(--accent));
+        }
+
+        .skill-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .skill-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Карточки портфолио */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        #portfolio-section {
+            margin: 2rem 0 5rem 0;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            box-shadow: inset 0 0 30px var(--inner-glow),
+                        var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 20px rgba(102, 187, 106, 0.4),
+                        0 0 40px rgba(66, 133, 244, 0.3),
+                        0 0 60px rgba(156, 39, 176, 0.2),
+                        inset 0 0 50px var(--inner-glow);
+        }
+
+        .portfolio-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: rgba(150, 150, 150, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .portfolio-img::after {
+            content: '\f04b';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 2rem;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2;
+        }
+
+        .portfolio-item:hover .portfolio-img::after {
+            opacity: 1;
+        }
+
+        .portfolio-item p {
+            padding: 1rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        /* Секция "Почему ко мне возвращаются" */
+        .why-me {
+            margin: 2rem 0 5rem 0;
+        }
+
+        .why-me-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+
+        .benefit-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            box-shadow: inset 0 0 30px var(--inner-glow), var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 20px rgba(102, 187, 106, 0.3),
+                        0 0 40px rgba(66, 133, 244, 0.2),
+                        inset 0 0 30px var(--inner-glow);
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .benefit-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Секция "4 шага" */
+        .steps {
+            margin: 2rem 0 5rem 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.8rem;
+            margin-top: 2rem;
+            counter-reset: step-counter;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            box-shadow: inset 0 0 30px var(--inner-glow), var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 0 20px rgba(102, 187, 106, 0.3),
+                        0 0 40px rgba(66, 133, 244, 0.2),
+                        inset 0 0 30px var(--inner-glow);
+        }
+
+        .step-card::before {
+            content: "0" counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .step-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Контакты */
+        .contacts {
+            padding: 3rem;
+            margin: 4rem 0 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: color 0.2s, transform 0.2s ease;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .contact-item i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+            transition: transform 0.2s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--accent);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .contact-item:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Футер */
+        footer {
+            width: 100%;
+            background: var(--footer-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--card-border);
+            color: var(--footer-text);
+            text-align: center;
+            padding: 1.8rem 0;
+            margin-top: 3rem;
+            transition: background 0.3s ease;
+            position: relative;
+            z-index: 2;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+        }
+
+        /* Модальное окно для видео (адаптивное) */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal video {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 16px;
+            box-shadow: 0 0 30px var(--accent);
+            background: #000;
+            transition: all 0.2s ease;
+        }
+
+        .video-modal video.portrait {
+            max-height: 80vh;
+            width: auto;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0 10px;
+            z-index: 10;
+        }
+
+        .video-modal-close:hover {
+            color: var(--accent);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 2rem;
+            }
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 1.2rem;
+            }
+            .hero-image {
+                width: 250px;
+                height: 250px;
+            }
+            .clapperboard-wrapper {
+                width: 150px;
+                height: 150px;
+            }
+            .clapperboard {
+                font-size: 6rem;
+            }
+            .air-flow-1 {
+                width: 170px;
+                height: 170px;
+            }
+            .air-flow-2 {
+                width: 200px;
+                height: 200px;
+            }
+            .air-flow-3 {
+                width: 140px;
+                height: 140px;
+            }
+            #skills, #portfolio, #contacts, #why-me, #steps {
+                scroll-margin-top: 130px;
+            }
+            .skills-section, .contacts, .why-me, .steps {
+                padding: 2rem;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .why-me-grid {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-mini-container {
+                justify-content: center;
+            }
+            .theme-toggle-fixed {
+                top: 10px;
+                right: 10px;
+                font-size: 1.8rem;
+            }
+            .contact-links {
+                gap: 1.5rem;
+            }
+            .contact-item {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка смены темы (фиксированная) -->
+    <button class="theme-toggle-fixed" id="themeToggle" aria-label="Переключить тему">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="nebula"></div>
+    <canvas id="constellationCanvas"></canvas>
+
+    <main class="container">
+        <!-- Герой -->
+        <section class="hero">
+            <div class="hero-text">
+                <h1><span class="highlight">Андрей</span></h1>
+                <p>video editing director<br><br><br>Специализируюсь на создании любых анимаций, цветокоррекции и прочего эдититинга видео.</p>
+            </div>
+            <div class="hero-image" id="clapperboardContainer">
+                <div class="clapperboard-wrapper" id="clapperboardWrapper">
+                    <i class="fas fa-clapperboard clapperboard"></i>
+                    <div class="air-flow air-flow-1"></div>
+                    <div class="air-flow air-flow-2"></div>
+                    <div class="air-flow air-flow-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Навигационные мини-карточки -->
+        <div class="nav-mini-container">
+            <a href="#skills" class="nav-mini-card">Навыки</a>
+            <a href="#portfolio" class="nav-mini-card">Работы</a>
+            <a href="#why-me" class="nav-mini-card">Почему я</a>
+            <a href="#steps" class="nav-mini-card">Как работаю</a>
+            <a href="#contacts" class="nav-mini-card">Контакты</a>
+        </div>
+
+        <!-- Навыки -->
+        <h2 class="section-title" id="skills">Навыки</h2>
+        <section class="skills-section fade-up">
+            <div class="skills-grid">
+                <div class="skill-card fade-up delay-1">
+                    <i class="fas fa-palette"></i>
+                    <h3>DaVinci Resolve</h3>
+                    <p>Профессиональная цветокоррекция</p>
+                </div>
+                <div class="skill-card fade-up delay-2">
+                    <i class="fas fa-video"></i>
+                    <h3>Premiere Pro</h3>
+                    <p>Динамичный видеомонтаж</p>
+                </div>
+                <div class="skill-card fade-up delay-3">
+                    <i class="fas fa-cubes"></i>
+                    <h3>After Effects</h3>
+                    <p>2D/3D графика и анимация</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Работы (с превью) -->
+        <h2 class="section-title" id="portfolio">Работы</h2>
+        <section id="portfolio-section">
+            <div class="portfolio-grid">
+                <!-- Карточка 1 (горизонтальное) -->
+                <div class="portfolio-item fade-up delay-1" data-video-src="videos/спидрамп дом.mp4" data-orientation="landscape">
+                    <div class="portfolio-img">
+                        <img src="thumbnails/спидрамп дом.png" alt="Рекламный ролик для риэлторского агентства" loading="lazy">
+                    </div>
+                    <p>Рекламный ролик для риэлторского агентства</p>
+                </div>
+                <!-- Карточка 2 (вертикальное) -->
+                <div class="portfolio-item fade-up delay-2" data-video-src="videos/Пляж.mp4" data-orientation="portrait">
+                    <div class="portfolio-img">
+                        <img src="thumbnails/Пляж.png" alt="Девичник в термальном комплексе" loading="lazy">
+                    </div>
+                    <p>Девичник в термальном комплексе</p>
+                </div>
+                <!-- Карточка 3 (вертикальное) -->
+                <div class="portfolio-item fade-up delay-3" data-video-src="videos/картинг.mp4" data-orientation="portrait">
+                    <div class="portfolio-img">
+                        <img src="thumbnails/картинг.png" alt="Эдит для ElectroKarting" loading="lazy">
+                    </div>
+                    <p>Эдит для ElectroKarting</p>
+                </div>
+                <!-- Карточка 4 (вертикальное) -->
+                <div class="portfolio-item fade-up delay-4" data-video-src="videos/симрейсинг.mp4" data-orientation="portrait">
+                    <div class="portfolio-img">
+                        <img src="thumbnails/симрейсинг.png" alt="Рекламное видео" loading="lazy">
+                    </div>
+                    <p>Рекламное видео</p>
+                </div>
+                <!-- Карточка 5 (вертикальное) -->
+                <div class="portfolio-item fade-up delay-5" data-video-src="videos/Экспертное видео.mp4" data-orientation="portrait">
+                    <div class="portfolio-img">
+                        <img src="thumbnails/Экспертное видео.png" alt="Экспертный ролик" loading="lazy">
+                    </div>
+                    <p>Экспертный ролик</p>
+                </div>
+                <!-- Карточка 6 (вертикальное) -->
+                <div class="portfolio-item fade-up delay-6" data-video-src="videos/Юлиана 80е.mp4" data-orientation="portrait">
+                    <div class="portfolio-img">
+                        <img src="thumbnails/Юлиана 80е.png" alt="Видео для блога" loading="lazy">
+                    </div>
+                    <p>Видео для блога</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Почему ко мне возвращаются -->
+        <h2 class="section-title" id="why-me">Почему ко мне возвращаются</h2>
+        <section class="why-me fade-up">
+            <div class="why-me-grid">
+                <div class="benefit-card">
+                    <h3>⏳ Дедлайн — закон</h3>
+                    <p>2 года, ноль просрочек. Закладываю буфер, не беру больше чем тяну. Если говорю «через 3 дня» — значит через 3 дня.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>🎯 Без лишних вопросов</h3>
+                    <p>Скинул чёткое ТЗ — и я уже работаю.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>💡 3 правки в подарок</h3>
+                    <p>Первые 3 доработки — бесплатно. Дальше от сложности. Без внезапных «а это доп. оплата».</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4 шага -->
+        <h2 class="section-title" id="steps">4 шага — и у тебя готовое видео</h2>
+        <section class="steps fade-up">
+            <div class="steps-grid">
+                <div class="step-card">
+                    <h3>Пишешь</h3>
+                    <p>Описываешь задачу своими словами — в Telegram, голосовым, скриншотами, как удобно.</p>
+                </div>
+                <div class="step-card">
+                    <h3>Считаю</h3>
+                    <p>В течение часа — сроки, цена, и честный ответ: берусь или нет.</p>
+                </div>
+                <div class="step-card">
+                    <h3>Делаю</h3>
+                    <p>Работаю. Скидываю прогресс если хочешь, или просто жди результат.</p>
+                </div>
+                <div class="step-card">
+                    <h3>Сдаю</h3>
+                    <p>Финальное видео. Подтверждаешь. Всё.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <h2 class="section-title" id="contacts">Контакты</h2>
+        <section class="contacts glass-card fade-up">
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">Обсудим ваш проект? Свяжитесь со мной любым удобным способом.</p>
+            <div class="contact-links">
+                <a href="https://t.me/Susano_BidGoo" class="contact-item" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+                <a href="https://wa.me/89375979928" class="contact-item" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="mailto:andrew1284krm@gmail.com" class="contact-item">
+                    <i class="far fa-envelope"></i> Email
+                </a>
+                <a href="https://www.instagram.com/fusano_tocu?igsh=bnhwZjBuaGpjaG4x" class="contact-item" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Susano. Создано с вайбом.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для видео -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="video-modal-close" id="videoModalClose">&times;</button>
+            <video id="modalVideo" controls autoplay playsinline></video>
+        </div>
+    </div>
+
+    <script>
+        // ===== ПЕРЕКЛЮЧЕНИЕ ТЕМЫ =====
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const icon = themeToggle.querySelector('i');
+            const body = document.body;
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                body.classList.remove('light-theme');
+                icon.classList.add('fa-moon');
+                if (!savedTheme) localStorage.setItem('theme', 'dark');
+            }
+
+            function toggleTheme() {
+                if (body.classList.contains('light-theme')) {
+                    body.classList.remove('light-theme');
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.add('light-theme');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'light');
+                }
+                if (window.constellation) {
+                    constellation.updateColor();
+                }
+            }
+
+            themeToggle.addEventListener('click', toggleTheme);
+        })();
+
+        // ===== 3D ПОВОРОТ ХЛОПУШКИ =====
+        (function() {
+            const container = document.getElementById('clapperboardContainer');
+            const wrapper = document.getElementById('clapperboardWrapper');
+            if (!container || !wrapper) return;
+
+            const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+
+            if (hasFinePointer) {
+                const maxRotate = 22;
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    const offsetX = (e.clientX - centerX) / (rect.width / 2);
+                    const offsetY = (e.clientY - centerY) / (rect.height / 2);
+                    
+                    wrapper.style.transform = `rotateX(${-offsetY * maxRotate}deg) rotateY(${offsetX * maxRotate}deg)`;
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    wrapper.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                });
+            }
+        })();
+
+        // ===== АНИМИРОВАННЫЕ СОЗВЕЗДИЯ =====
+        (function() {
+            const canvas = document.getElementById('constellationCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width, height;
+            let starsClose = [];
+            let starsMedium = [];
+            let starsFar = [];
+            
+            let mouseX = -1000, mouseY = -1000;
+            const MAX_DIST = 180;
+            const SHIFT_FORCE = 15;
+            let animationFrame;
+
+            function getColors() {
+                const style = getComputedStyle(document.body);
+                return {
+                    close: style.getPropertyValue('--constellation-color-close').trim(),
+                    medium: style.getPropertyValue('--constellation-color-medium').trim(),
+                    far: style.getPropertyValue('--constellation-color-far').trim()
+                };
+            }
+
+            function initStars() {
+                starsClose = [];
+                for (let i = 0; i < 60; i++) {
+                    const x = Math.random() * width;
+                    const y = Math.random() * height;
+                    starsClose.push({
+                        x: x, y: y,
+                        targetX: x, targetY: y,
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.4,
+                        size: 2.5 + Math.random() * 1.5,
+                        layer: 'close'
+                    });
+                }
+                starsMedium = [];
+                for (let i = 0; i < 30; i++) {
+                    const x = Math.random() * width;
+                    const y = Math.random() * height;
+                    starsMedium.push({
+                        x: x, y: y,
+                        targetX: x, targetY: y,
+                        vx: (Math.random() - 0.5) * 0.2,
+                        vy: (Math.random() - 0.5) * 0.2,
+                        size: 1.8 + Math.random() * 1,
+                        layer: 'medium'
+                    });
+                }
+                starsFar = [];
+                for (let i = 0; i < 20; i++) {
+                    const x = Math.random() * width;
+                    const y = Math.random() * height;
+                    starsFar.push({
+                        x: x, y: y,
+                        targetX: x, targetY: y,
+                        vx: (Math.random() - 0.5) * 0.1,
+                        vy: (Math.random() - 0.5) * 0.1,
+                        size: 1.2 + Math.random() * 0.6,
+                        layer: 'far'
+                    });
+                }
+            }
+
+            function resizeCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+
+            function updateTargets() {
+                [starsClose, starsMedium, starsFar].forEach(layer => {
+                    layer.forEach(s => {
+                        s.targetX += s.vx;
+                        s.targetY += s.vy;
+
+                        s.targetX += (Math.random() - 0.5) * 0.1;
+                        s.targetY += (Math.random() - 0.5) * 0.1;
+
+                        if (s.targetX < 0) s.targetX = width;
+                        if (s.targetX > width) s.targetX = 0;
+                        if (s.targetY < 0) s.targetY = height;
+                        if (s.targetY > height) s.targetY = 0;
+
+                        if (Math.random() < 0.005) {
+                            s.vx = (Math.random() - 0.5) * (s.layer === 'close' ? 0.4 : (s.layer === 'medium' ? 0.2 : 0.1));
+                            s.vy = (Math.random() - 0.5) * (s.layer === 'close' ? 0.4 : (s.layer === 'medium' ? 0.2 : 0.1));
+                        }
+                    });
+                });
+            }
+
+            function updateStars() {
+                starsClose.forEach(s => {
+                    const dx = s.targetX - mouseX;
+                    const dy = s.targetY - mouseY;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    let targetX = s.targetX;
+                    let targetY = s.targetY;
+                    
+                    if (dist < MAX_DIST && dist > 0.1) {
+                        const force = (1 - dist / MAX_DIST) * SHIFT_FORCE;
+                        const angle = Math.atan2(dy, dx);
+                        targetX = s.targetX + Math.cos(angle) * force;
+                        targetY = s.targetY + Math.sin(angle) * force;
+                    }
+
+                    s.x += (targetX - s.x) * 0.03;
+                    s.y += (targetY - s.y) * 0.03;
+                });
+
+                starsMedium.forEach(s => {
+                    const dx = s.targetX - mouseX;
+                    const dy = s.targetY - mouseY;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    let targetX = s.targetX;
+                    let targetY = s.targetY;
+                    
+                    if (dist < MAX_DIST * 1.5 && dist > 0.1) {
+                        const force = (1 - dist / (MAX_DIST * 1.5)) * SHIFT_FORCE * 0.3;
+                        const angle = Math.atan2(dy, dx);
+                        targetX = s.targetX + Math.cos(angle) * force;
+                        targetY = s.targetY + Math.sin(angle) * force;
+                    }
+
+                    s.x += (targetX - s.x) * 0.02;
+                    s.y += (targetY - s.y) * 0.02;
+                });
+
+                starsFar.forEach(s => {
+                    s.x += (s.targetX - s.x) * 0.01;
+                    s.y += (s.targetY - s.y) * 0.01;
+                });
+            }
+
+            function drawStars() {
+                ctx.clearRect(0, 0, width, height);
+                const colors = getColors();
+
+                ctx.strokeStyle = colors.close;
+                ctx.lineWidth = 1.2;
+                for (let i = 0; i < starsClose.length; i++) {
+                    for (let j = i+1; j < starsClose.length; j++) {
+                        const dx = starsClose[i].x - starsClose[j].x;
+                        const dy = starsClose[i].y - starsClose[j].y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 120) {
+                            const opacity = 1 - dist / 120;
+                            ctx.globalAlpha = opacity * 0.4;
+                            ctx.beginPath();
+                            ctx.moveTo(starsClose[i].x, starsClose[i].y);
+                            ctx.lineTo(starsClose[j].x, starsClose[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                ctx.strokeStyle = colors.medium;
+                ctx.lineWidth = 0.8;
+                for (let i = 0; i < starsMedium.length; i++) {
+                    for (let j = i+1; j < starsMedium.length; j++) {
+                        const dx = starsMedium[i].x - starsMedium[j].x;
+                        const dy = starsMedium[i].y - starsMedium[j].y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist < 100) {
+                            const opacity = 1 - dist / 100;
+                            ctx.globalAlpha = opacity * 0.3;
+                            ctx.beginPath();
+                            ctx.moveTo(starsMedium[i].x, starsMedium[i].y);
+                            ctx.lineTo(starsMedium[j].x, starsMedium[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                starsClose.forEach(s => {
+                    ctx.fillStyle = colors.close;
+                    ctx.globalAlpha = 0.2;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size * 2.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.globalAlpha = 0.9;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                starsMedium.forEach(s => {
+                    ctx.fillStyle = colors.medium;
+                    ctx.globalAlpha = 0.15;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.globalAlpha = 0.8;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                starsFar.forEach(s => {
+                    ctx.fillStyle = colors.far;
+                    ctx.globalAlpha = 0.1;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size * 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.globalAlpha = 0.7;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+
+            function animate() {
+                updateTargets();
+                updateStars();
+                drawStars();
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            function onMouseMove(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            }
+
+            function onMouseLeave() {
+                mouseX = -1000;
+                mouseY = -1000;
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+            });
+
+            if (window.matchMedia('(pointer: fine)').matches) {
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseleave', onMouseLeave);
+            }
+
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initStars();
+            animate();
+
+            window.constellation = {
+                updateColor: function() {}
+            };
+        })();
+
+        // ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ =====
+        (function() {
+            const fadeElements = document.querySelectorAll('.fade-up');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
+                        // Используем requestAnimationFrame для плавного перехода
+                        requestAnimationFrame(() => {
+                            entry.target.classList.add('visible');
+                        });
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: '0px 0px -10px 0px' });
+            
+            fadeElements.forEach(el => observer.observe(el));
+        })();
+
+        // ===== МОДАЛЬНОЕ ОКНО ДЛЯ ЛОКАЛЬНЫХ ВИДЕО (АДАПТИВНОЕ С ПРЕДЗАДАННОЙ ОРИЕНТАЦИЕЙ) =====
+        (function() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            const closeBtn = document.getElementById('videoModalClose');
+            const cards = document.querySelectorAll('.portfolio-item[data-video-src]');
+
+            function openModal(videoSrc, orientation) {
+                video.src = videoSrc;
+                video.load();
+
+                // Сразу применяем класс в зависимости от ориентации
+                if (orientation === 'portrait') {
+                    video.classList.add('portrait');
+                } else {
+                    video.classList.remove('portrait');
+                }
+
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                video.play().catch(e => console.log('Автозапуск не удался:', e));
+            }
+
+            function closeModal() {
+                video.pause();
+                video.src = '';
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+                video.classList.remove('portrait'); // очищаем класс
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const videoSrc = card.dataset.videoSrc;
+                    const orientation = card.dataset.orientation;
+                    if (videoSrc) openModal(videoSrc, orientation);
+                    else alert('Видео ещё не добавлено. Укажите data-video-src в карточке.');
+                });
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
